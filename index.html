@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fullestdanial — Community Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12131a;
+    --panel:#1b1d29;
+    --panel-2:#22243333;
+    --bone:#eeeae0;
+    --muted:#8d90a3;
+    --ember:#e8a33d;
+    --signal:#52d1c2;
+    --line:#33364a;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--bone);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  a{color:var(--signal); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--signal); outline-offset:3px;}
+
+  .wrap{max-width:820px; margin:0 auto; padding:0 28px;}
+
+  /* HERO */
+  .hero{
+    position:relative;
+    min-height:78vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  #graph{
+    position:absolute; inset:0; width:100%; height:100%;
+    opacity:0.55;
+  }
+  .hero-inner{position:relative; z-index:2; padding:120px 28px 80px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--signal);
+    margin:0 0 22px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px; height:7px; border-radius:50%;
+    background:var(--ember);
+    box-shadow:0 0 0 4px rgba(232,163,61,0.18);
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-optical-sizing:auto;
+    font-size:clamp(42px, 8vw, 76px);
+    line-height:1.02;
+    margin:0 0 14px;
+    letter-spacing:-0.01em;
+    max-width:11ch;
+  }
+  .role{
+    font-size:clamp(18px,2.6vw,22px);
+    color:var(--muted);
+    margin:0 0 28px;
+    max-width:44ch;
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:22px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    color:var(--bone);
+  }
+  .meta span{display:flex; align-items:center; gap:8px; color:var(--muted);}
+  .meta span b{color:var(--bone); font-weight:500;}
+
+  /* SECTIONS */
+  section{padding:64px 0;}
+  section + section{border-top:1px solid var(--line);}
+  .label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ember);
+    margin:0 0 22px;
+  }
+  h2{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:28px;
+    margin:0 0 20px;
+  }
+  .about p{
+    font-size:18px;
+    color:#d6d3c9;
+    max-width:62ch;
+    margin:0;
+  }
+
+  /* TIMELINE */
+  .timeline{position:relative; margin-top:8px;}
+  .timeline::before{
+    content:"";
+    position:absolute; left:6px; top:6px; bottom:6px;
+    width:1px; background:var(--line);
+  }
+  .role-item{position:relative; padding:0 0 34px 34px;}
+  .role-item:last-child{padding-bottom:0;}
+  .role-item::before{
+    content:"";
+    position:absolute; left:0; top:6px;
+    width:13px; height:13px; border-radius:50%;
+    background:var(--ink);
+    border:2px solid var(--signal);
+  }
+  .role-item.current::before{
+    background:var(--ember);
+    border-color:var(--ember);
+    box-shadow:0 0 0 5px rgba(232,163,61,0.16);
+  }
+  .role-head{
+    display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 14px;
+    margin-bottom:6px;
+  }
+  .role-title{font-size:18px; font-weight:600; color:var(--bone);}
+  .role-org{color:var(--signal); font-size:15px;}
+  .role-date{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    color:var(--muted);
+    margin-left:auto;
+    white-space:nowrap;
+  }
+  .role-desc{color:#c7c4ba; font-size:15.5px; max-width:60ch; margin:0;}
+
+  /* AMBASSADOR */
+  .ambassador-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .amb-card{
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 20px;
+    background:linear-gradient(180deg, rgba(82,209,194,0.05), transparent);
+  }
+  .amb-card .name{font-weight:600; font-size:16px; margin-bottom:4px;}
+  .amb-card .sub{font-size:13.5px; color:var(--muted);}
+  .amb-card .since{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--signal);
+    margin-top:10px;
+    display:inline-block;
+  }
+
+  /* PUBLICATION */
+  .pub{
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:28px 30px;
+    position:relative;
+  }
+  .pub::before{
+    content:"❝";
+    font-family:'Fraunces',serif;
+    position:absolute; top:14px; left:20px;
+    font-size:40px; color:var(--line);
+    line-height:1;
+  }
+  .pub-title{
+    font-family:'Fraunces',serif;
+    font-size:20px;
+    font-style:italic;
+    margin:14px 0 12px 8px;
+    color:var(--bone);
+  }
+  .pub-body{color:#c7c4ba; font-size:15.5px; margin:0 0 4px; padding-left:8px;}
+  .pub-byline{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    color:var(--muted);
+    padding-left:8px;
+  }
+
+  /* SKILLS */
+  .skills-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+  }
+  .skill-col .skill-head{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--signal);
+    margin-bottom:12px;
+  }
+  .tag-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{
+    font-size:13px;
+    padding:6px 12px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    color:var(--bone);
+    white-space:nowrap;
+  }
+  a.tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    border-color:var(--signal);
+    color:var(--signal);
+    text-decoration:none;
+    transition:background 0.15s ease, color 0.15s ease;
+  }
+  a.tag:hover{
+    background:var(--signal);
+    color:var(--ink);
+    text-decoration:none;
+  }
+
+  footer{
+    padding:50px 0 70px;
+    text-align:center;
+    color:var(--muted);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+  }
+
+  @media (max-width:640px){
+    .hero-inner{padding:90px 24px 60px;}
+    .ambassador-grid{grid-template-columns:1fr;}
+    .skills-grid{grid-template-columns:1fr;}
+    .role-date{margin-left:0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <canvas id="graph"></canvas>
+  <div class="hero-inner wrap">
+    <p class="eyebrow">Online, active, moderating</p>
+    <h1>Fullestdanial</h1>
+    <p class="role">Community Manager building trust and retention across Web3 communities and brands.</p>
+    <div class="meta">
+      <span>📍 <b>Istanbul, Türkiye</b></span>
+      <span>✉️ <b>danialnftl@gmail.com</b></span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="about">
+    <p class="label">About</p>
+    <p>Community Manager with experience supporting established Web3 communities and brands. Skilled in engagement, moderation, and retention strategies that keep members active and loyal, even during challenging market conditions.</p>
+  </section>
+
+  <section>
+    <p class="label">Experience</p>
+    <div class="timeline">
+
+      <div class="role-item">
+        <div class="role-head">
+          <span class="role-title">Moderator — Tessera Lab</span>
+          <span class="role-org">in work with keewy</span>
+          <span class="role-date">Feb 2026 – Mar 2026</span>
+        </div>
+        <p class="role-desc">Community management and strategic engagement focused on decentralized protocols.</p>
+      </div>
+
+      <div class="role-item">
+        <div class="role-head">
+          <span class="role-title">Community Relationships Assistant — Cryptoys</span>
+          <span class="role-org">in work with keewy</span>
+          <span class="role-date">Dec 2025 – Jan 2026</span>
+        </div>
+        <p class="role-desc">Supported engagement and member relations, maintained a positive environment, and assisted communication between team and community.</p>
+      </div>
+
+      <div class="role-item">
+        <div class="role-head">
+          <span class="role-title">Community Manager — Pranksy</span>
+          <span class="role-org">in work with keewy</span>
+          <span class="role-date">Oct 2025 – Nov 2025</span>
+        </div>
+        <p class="role-desc">Managed daily operations, implemented retention strategies, moderated discussions, and resolved issues.</p>
+      </div>
+
+      <div class="role-item">
+        <div class="role-head">
+          <span class="role-title">Doonlabs Community Manager & X Space Host</span>
+          <span class="role-date">Oct 2025 – Nov 2025</span>
+        </div>
+        <p class="role-desc">Moderated community growth and hosted live audio sessions to drive engagement.</p>
+      </div>
+
+      <div class="role-item">
+        <div class="role-head">
+          <span class="role-title">Moderator</span>
+          <span class="role-org">Various Projects</span>
+          <span class="role-date">Jun 2025 – Oct 2025</span>
+        </div>
+        <p class="role-desc">Monitored activity, enforced guidelines, assisted members, and supported engagement initiatives across multiple community projects.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Ambassador Roles</p>
+    <div class="ambassador-grid">
+      <div class="amb-card">
+        <div class="name">Mu Digital</div>
+        <div class="sub">RWA on Monad</div>
+        <span class="since">Aug 2024 – Present</span>
+      </div>
+      <div class="amb-card">
+        <div class="name">Nomas Wallet</div>
+        <div class="sub">Ambassador</div>
+        <span class="since">Sep 2024 – Present</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Featured Publication</p>
+    <div class="pub">
+      <p class="pub-title">"Building a true community is one of the biggest challenges in Web3"</p>
+      <p class="pub-body">In this article, I analyze the necessity of moving beyond hype to foster genuine trust and shared ownership. It details strategies for maintaining community momentum and high retention rates through volatile market cycles.</p>
+      <p class="pub-byline">Author: Fullestdanial · Published on Medium</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Core Skills</p>
+    <div class="skills-grid">
+      <div class="skill-col">
+        <div class="skill-head">Management</div>
+        <div class="tag-row">
+          <span class="tag">Retention</span>
+          <span class="tag">Engagement</span>
+          <span class="tag">Moderation</span>
+          <span class="tag">Conflict Resolution</span>
+        </div>
+      </div>
+      <div class="skill-col">
+        <div class="skill-head">Communication</div>
+        <div class="tag-row">
+          <span class="tag">Member Support</span>
+          <span class="tag">Relationship Building</span>
+          <span class="tag">Team Coordination</span>
+        </div>
+      </div>
+      <div class="skill-col">
+        <div class="skill-head">Languages</div>
+        <div class="tag-row">
+          <span class="tag">English (Fluent)</span>
+          <span class="tag">Turkish (Fluent)</span>
+          <span class="tag">Persian (Fluent)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Connect</p>
+    <div class="tag-row">
+      <a class="tag" href="https://x.com/FullestDanial" target="_blank" rel="noopener">𝕏 @FullestDanial</a>
+      <a class="tag" href="mailto:danialnftl@gmail.com">✉️ danialnftl@gmail.com</a>
+    </div>
+  </section>
+
+</div>
+
+<footer>Fullestdanial — Community Manager · Istanbul, Türkiye</footer>
+
+<script>
+  // Ambient constellation: nodes represent community members, lines represent active relationships.
+  const canvas = document.getElementById('graph');
+  const ctx = canvas.getContext('2d');
+  let w, h, nodes = [];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){
+    w = canvas.width = canvas.offsetWidth * devicePixelRatio;
+    h = canvas.height = canvas.offsetHeight * devicePixelRatio;
+  }
+
+  function init(){
+    resize();
+    const count = Math.max(18, Math.floor((w*h)/70000));
+    nodes = Array.from({length: count}, () => ({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      vx: (Math.random()-0.5)*0.25*devicePixelRatio,
+      vy: (Math.random()-0.5)*0.25*devicePixelRatio,
+      r: (Math.random()*1.6 + 1)*devicePixelRatio,
+      pulse: Math.random()*Math.PI*2,
+      active: Math.random() < 0.16
+    }));
+  }
+
+  function step(){
+    ctx.clearRect(0,0,w,h);
+    const maxDist = 150*devicePixelRatio;
+
+    for(const n of nodes){
+      if(!reduceMotion){
+        n.x += n.vx; n.y += n.vy;
+        if(n.x < 0 || n.x > w) n.vx *= -1;
+        if(n.y < 0 || n.y > h) n.vy *= -1;
+        n.pulse += 0.02;
+      }
+    }
+
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const a = nodes[i], b = nodes[j];
+        const dx = a.x-b.x, dy = a.y-b.y;
+        const dist = Math.sqrt(dx*dx+dy*dy);
+        if(dist < maxDist){
+          const alpha = (1 - dist/maxDist) * 0.35;
+          ctx.strokeStyle = `rgba(82,209,194,${alpha})`;
+          ctx.lineWidth = 1*devicePixelRatio;
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y);
+          ctx.lineTo(b.x,b.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    for(const n of nodes){
+      const glow = n.active ? (Math.sin(n.pulse)*0.3+0.7) : 0.5;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+      ctx.fillStyle = n.active ? `rgba(232,163,61,${glow})` : `rgba(238,234,224,0.5)`;
+      ctx.fill();
+    }
+
+    if(!reduceMotion) requestAnimationFrame(step);
+  }
+
+  window.addEventListener('resize', () => { init(); if(reduceMotion) step(); });
+  init();
+  step();
+</script>
+
+</body>
+</html>
